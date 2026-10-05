@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Journify | Holidays, attractions &amp; MHflypass</title>
+<link rel="icon" href="../assets/journify-avatar.png" />
+<style>
+  :root{
+    --orange:#ff9027; --orange-600:#f57c00; --orange-100:#fff3e3;
+    --pink:#ff5f8a; --purple:#9b2fb5;
+    --slate:#4a555b; --ink:#222b30; --muted:#7b858b; --line:#e4e7e9; --grey:#b6b6b6;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#f6f7f8;color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+
+  .demo{background:var(--ink);color:#fff;font-size:12.5px;padding:7px 16px;text-align:center}
+  .demo code{background:rgba(255,255,255,.14);padding:1px 6px;border-radius:4px}
+  .demo a{color:#ffc55e;text-decoration:underline;margin-left:6px}
+
+  .hdr{position:sticky;top:0;z-index:40;background:#fff;border-bottom:1px solid var(--line)}
+  .hdr-in{max-width:1200px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:20px}
+  .logo{height:36px;width:auto}
+  .nav{display:flex;align-items:center;gap:22px;margin-left:auto;font-size:14px;font-weight:600;color:var(--slate)}
+  .nav a:hover{color:var(--orange)}
+  .locale{color:var(--grey)} .locale b{color:var(--slate)}
+  .login{background:var(--orange);color:#fff;border:0;border-radius:999px;padding:9px 20px;font-size:14px;font-weight:700;cursor:pointer}
+  .login:hover{background:var(--orange-600)}
+  @media(max-width:860px){.nav .hide-sm{display:none}}
+
+  .hero{background:linear-gradient(100deg,#ffc55e 0%,#ff9027 55%,#ff5f8a 100%);color:#fff}
+  .hero-in{max-width:1200px;margin:0 auto;padding:56px 20px 64px}
+  .hero h1{font-size:40px;letter-spacing:-.02em;margin:0 0 10px;max-width:16ch;line-height:1.1}
+  .hero p{font-size:17px;margin:0 0 26px;max-width:48ch;line-height:1.6;opacity:.95}
+  .search{display:flex;gap:8px;background:#fff;border-radius:999px;padding:6px;max-width:560px;box-shadow:0 10px 30px rgba(0,0,0,.12)}
+  .search input{flex:1;border:0;outline:0;font-size:15px;padding:10px 16px;border-radius:999px;color:var(--ink);min-width:0}
+  .search button{background:var(--slate);color:#fff;border:0;border-radius:999px;padding:10px 22px;font-weight:700;cursor:pointer}
+
+  .wrap{max-width:1200px;margin:0 auto;padding:40px 20px 70px}
+  h2{font-size:22px;margin:0 0 18px;letter-spacing:-.01em}
+  .cats{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-bottom:44px}
+  @media(max-width:900px){.cats{grid-template-columns:repeat(3,1fr)}}
+  @media(max-width:520px){.cats{grid-template-columns:repeat(2,1fr)}}
+  .cat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center;font-weight:700;font-size:14px;cursor:pointer;transition:transform .12s,box-shadow .12s}
+  .cat:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(34,43,48,.08)}
+  .cat i{display:grid;place-items:center;width:44px;height:44px;margin:0 auto 10px;border-radius:12px;background:var(--orange-100);color:var(--orange);font-style:normal;font-size:20px;font-weight:800}
+
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  @media(max-width:860px){.cards{grid-template-columns:1fr}}
+  .card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px}
+  .card .tag{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--purple);background:#f5e9f9;border-radius:6px;padding:3px 8px;margin-bottom:10px}
+  .card h3{margin:0 0 8px;font-size:17px}
+  .card p{margin:0;color:var(--slate);font-size:14px;line-height:1.6}
+
+  .ftr{background:var(--slate);color:#fff;padding:40px 20px 26px}
+  .ftr-in{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:34px}
+  @media(max-width:700px){.ftr-in{grid-template-columns:1fr}}
+  .ftr h4{margin:0 0 14px;font-size:14px;letter-spacing:.04em;text-transform:uppercase}
+  .ftr ul{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+  .ftr li a{font-size:13.5px;color:rgba(255,255,255,.78)}
+  .copy{max-width:1200px;margin:30px auto 0;padding-top:18px;border-top:1px solid rgba(255,255,255,.16);font-size:12.5px;color:rgba(255,255,255,.6)}
+</style>
+</head>
+<body>
+
+<div class="demo">
+  Mockup &middot; Ada agent <code>journify-sandbox</code> &middot; brand <code>journify</code>
+  <a href="../mh-holidays/">Switch to MHholidays &rarr;</a>
+</div>
+
+<header class="hdr">
+  <div class="hdr-in">
+    <a href="#"><img class="logo" src="../assets/journify-logo.png" alt="Journify by Malaysia Aviation Group" /></a>
+    <nav class="nav">
+      <a class="hide-sm" href="#">Download app</a>
+      <a class="hide-sm" href="#">Book a Holiday</a>
+      <span class="locale hide-sm"><b>EN</b> | <b>MYR</b></span>
+      <button class="login">Log in/Sign up</button>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-in">
+    <h1>Your next journey starts here</h1>
+    <p>Attractions, tours, MHflypass, e-vouchers and holiday packages &mdash; all in one place, by Malaysia Aviation Group.</p>
+    <div class="search">
+      <input placeholder="Search attractions, tours or destinations" />
+      <button>Search</button>
+    </div>
+  </div>
+</section>
+
+<main class="wrap">
+  <h2>Explore Journify</h2>
+  <div class="cats">
+    <div class="cat"><i>&#9992;</i>Flight + Hotel</div>
+    <div class="cat"><i>H</i>Hotels</div>
+    <div class="cat"><i>&#9733;</i>Attractions</div>
+    <div class="cat"><i>F</i>MHflypass</div>
+    <div class="cat"><i>&#9993;</i>E-Vouchers</div>
+    <div class="cat"><i>&#9673;</i>Shops</div>
+  </div>
+
+  <h2>Popular right now</h2>
+  <div class="cards">
+    <div class="card"><span class="tag">MHflypass</span><h3>MHflypass Malaysia</h3><p>Unlimited domestic hops on a single pass. Ask the assistant which pass fits your trip.</p></div>
+    <div class="card"><span class="tag">Attractions</span><h3>Things to do in Kuala Lumpur</h3><p>Skip-the-line tickets, day tours and food walks across the city.</p></div>
+    <div class="card"><span class="tag">E-Vouchers</span><h3>Gift a journey</h3><p>Send a Journify e-voucher for any occasion &mdash; redeemable on attractions and tours.</p></div>
+  </div>
+</main>
+
+<footer class="ftr">
+  <div class="ftr-in">
+    <div><h4>Journify</h4><ul><li><a href="#">About us</a></li><li><a href="#">Malaysia Aviation Group</a></li><li><a href="#">Terms &amp; Conditions</a></li><li><a href="#">Privacy policy</a></li></ul></div>
+    <div><h4>Help</h4><ul><li><a href="#">FAQs</a></li><li><a href="#">Contact us</a></li></ul></div>
+    <div><h4>Follow us</h4><ul><li><a href="#">Instagram</a></li><li><a href="#">Facebook</a></li><li><a href="#">TikTok</a></li></ul></div>
+  </div>
+  <div class="copy">&copy; 2026 Journify. Unofficial mockup for an Ada multi-brand demo.</div>
+</footer>
+
+<script>
+  window.BRAND = {
+    id: "journify",
+    branding: {
+      aiAgentName: { en: "Journify Assistant" },
+      aiAgentDescription: { en: "Help with attractions, MHflypass, e-vouchers and holidays" },
+      avatarUrl: "https://jiapengchua.github.io/brand-mockups/assets/journify-avatar.png",
+      headerColor: "#ff9027",
+      headerTextColor: "#ffffff",
+      tintColor: "#ff9027",
+      cornerStyle: "round",
+      launcher: { backgroundColor: "#ff9027", size: 60 }
+    }
+  };
+</script>
+<script src="../assets/ada-brand.js"></script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Exclusive Flight and Hotel Packages | MHholidays</title>
+<link rel="icon" href="../assets/mhh-avatar.png" />
+<style>
+  :root{
+    --teal:#007E78; --teal-700:#00625d; --teal-50:#e6f4f3;
+    --pink:#DB0F66; --navy:#041049; --blue:#1F4074;
+    --ink:#333333; --muted:#7c8d97; --line:#ced8dd; --bg:#f8f8f8;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Gotham",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+
+  .demo{background:var(--navy);color:#fff;font-size:12.5px;padding:7px 16px;text-align:center}
+  .demo code{background:rgba(255,255,255,.14);padding:1px 6px;border-radius:4px}
+  .demo a{color:#7fe0d8;text-decoration:underline;margin-left:6px}
+
+  .deals{background:var(--teal);color:#fff;font-size:13px;text-align:center;padding:8px 16px}
+  .deals b{font-weight:700}
+
+  .hdr{position:sticky;top:0;z-index:40;background:#fff;border-bottom:1px solid var(--line)}
+  .hdr-in{max-width:1200px;margin:0 auto;padding:16px 20px;display:flex;align-items:center;gap:24px}
+  .logo{height:30px;width:auto}
+  .nav{display:flex;align-items:center;gap:26px;margin-left:auto;font-size:14px;font-weight:600;color:var(--blue)}
+  .nav a:hover{color:var(--teal)}
+  @media(max-width:700px){.nav .hide-sm{display:none}}
+
+  .hero{position:relative;min-height:420px;background:#0b3a4a url("../assets/hero-mhh.jpg") center/cover;display:flex;align-items:flex-end}
+  .hero::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,16,73,.05) 30%,rgba(4,16,73,.65))}
+  .hero-in{position:relative;max-width:1200px;width:100%;margin:0 auto;padding:40px 20px}
+  .hero h1{font-family:"IvyMode",Georgia,serif;font-weight:500;color:#fff;font-size:40px;line-height:1.15;margin:0 0 6px;max-width:20ch}
+  .hero p{color:#fff;margin:0 0 22px;font-size:16px;opacity:.95}
+
+  .booker{background:#fff;border-radius:12px;box-shadow:0 14px 40px rgba(4,16,73,.25);padding:16px;max-width:860px}
+  .tabs{display:flex;gap:6px;margin-bottom:14px}
+  .tab{padding:8px 16px;border-radius:999px;font-size:14px;font-weight:700;color:var(--blue);background:var(--teal-50);cursor:pointer}
+  .tab.on{background:var(--teal);color:#fff}
+  .fields{display:grid;grid-template-columns:1.3fr 1.3fr 1fr 1fr auto;gap:10px}
+  @media(max-width:860px){.fields{grid-template-columns:1fr 1fr}}
+  .f{border:1px solid var(--line);border-radius:8px;padding:8px 12px}
+  .f small{display:block;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+  .f span{font-size:14.5px;font-weight:600;color:var(--navy)}
+  .go{background:var(--pink);color:#fff;border:0;border-radius:8px;padding:0 26px;font-weight:700;font-size:15px;cursor:pointer;min-height:48px}
+  .go:hover{filter:brightness(.92)}
+  .usp{font-size:13px;color:var(--muted);margin:12px 2px 0}
+
+  .wrap{max-width:1200px;margin:0 auto;padding:48px 20px 70px}
+  h2{font-family:"IvyMode",Georgia,serif;font-weight:500;color:var(--navy);font-size:30px;margin:0 0 22px}
+  .dest{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  @media(max-width:900px){.dest{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.dest{grid-template-columns:1fr}}
+  .d{background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 2px 10px rgba(4,16,73,.08)}
+  .d img{width:100%;height:190px;object-fit:cover}
+  .d .b{padding:16px 18px 18px}
+  .d h3{margin:0 0 4px;font-size:18px;color:var(--navy)}
+  .d .s{font-size:13px;color:var(--muted)}
+  .d .p{margin:10px 0 0;font-size:13px;color:var(--ink)}
+  .d .p b{font-size:20px;color:var(--teal)}
+  .d .cta{display:inline-block;margin-top:12px;color:var(--pink);font-weight:700;font-size:14px}
+
+  .why{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:52px}
+  @media(max-width:860px){.why{grid-template-columns:1fr 1fr}}
+  .w{background:#fff;border-left:4px solid var(--teal);border-radius:8px;padding:18px;font-size:14px;line-height:1.55}
+
+  .ftr{background:var(--navy);color:#fff;padding:40px 20px 26px}
+  .ftr-in{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:34px}
+  @media(max-width:700px){.ftr-in{grid-template-columns:1fr}}
+  .ftr h4{margin:0 0 14px;font-size:14px;letter-spacing:.04em;text-transform:uppercase}
+  .ftr ul{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+  .ftr li a{font-size:13.5px;color:rgba(255,255,255,.78)}
+  .copy{max-width:1200px;margin:30px auto 0;padding-top:18px;border-top:1px solid rgba(255,255,255,.16);font-size:12.5px;color:rgba(255,255,255,.6)}
+</style>
+</head>
+<body>
+
+<div class="demo">
+  Mockup &middot; Ada agent <code>journify-sandbox</code> &middot; brand <code>mh_holidays</code>
+  <a href="../journify/">&larr; Switch to Journify</a>
+</div>
+
+<div class="deals"><b>Deals:</b> Kids Fly &amp; Stay Free &middot; Discover the best of Thailand and Indonesia</div>
+
+<header class="hdr">
+  <div class="hdr-in">
+    <a href="#"><img class="logo" src="../assets/mhh-logo.png" alt="MHholidays" /></a>
+    <nav class="nav">
+      <a href="#">Promotions</a>
+      <a class="hide-sm" href="#">About us</a>
+      <a class="hide-sm" href="#">Feedback</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-in">
+    <h1>Save up to 30% on Flight + Hotel packages</h1>
+    <p>Fly with Malaysia Airlines or oneworld members and choose from over 150,000 hotels.</p>
+    <div class="booker">
+      <div class="tabs"><span class="tab on">Flight + Hotel</span><span class="tab">Hotel</span></div>
+      <div class="fields">
+        <div class="f"><small>From</small><span>Kuala Lumpur (KUL)</span></div>
+        <div class="f"><small>To</small><span>Langkawi (LGK)</span></div>
+        <div class="f"><small>Dates</small><span>Select dates</span></div>
+        <div class="f"><small>Guests</small><span>2 adults, 1 room</span></div>
+        <button class="go">Search</button>
+      </div>
+      <p class="usp">Up to 40kg baggage allowance and a one-time free date change.</p>
+    </div>
+  </div>
+</section>
+
+<main class="wrap">
+  <h2>Explore our top destinations</h2>
+  <div class="dest">
+    <div class="d"><img src="../assets/dest-langkawi.jpg" alt="Langkawi" /><div class="b"><h3>Langkawi</h3><div class="s">3D2N Flight + Hotel</div><p class="p">from <b>MYR439</b> all-in per person</p><a class="cta" href="#">Book now &rarr;</a></div></div>
+    <div class="d"><img src="../assets/dest-bangkok.jpg" alt="Bangkok" /><div class="b"><h3>Bangkok</h3><div class="s">4D3N Flights + Hotel stay</div><p class="p">from <b>MYR759</b> all-in per person</p><a class="cta" href="#">Book now &rarr;</a></div></div>
+    <div class="d"><img src="../assets/dest-bali.jpg" alt="Bali" /><div class="b"><h3>Bali</h3><div class="s">Flight + Hotel</div><p class="p">Ask the assistant for current fares</p><a class="cta" href="#">View deals &rarr;</a></div></div>
+    <div class="d"><img src="../assets/dest-penang.jpg" alt="Penang" /><div class="b"><h3>Penang</h3><div class="s">Flight + Hotel</div><p class="p">Kids Fly &amp; Stay Free</p><a class="cta" href="#">View deals &rarr;</a></div></div>
+    <div class="d"><img src="../assets/dest-kk.jpg" alt="Kota Kinabalu" /><div class="b"><h3>Kota Kinabalu</h3><div class="s">Flight + Hotel</div><p class="p">Ask the assistant for current fares</p><a class="cta" href="#">View deals &rarr;</a></div></div>
+    <div class="d"><img src="../assets/dest-tokyo.jpg" alt="Tokyo" /><div class="b"><h3>Tokyo</h3><div class="s">Flight + Hotel</div><p class="p">Ask the assistant for current fares</p><a class="cta" href="#">View deals &rarr;</a></div></div>
+  </div>
+
+  <div class="why">
+    <div class="w"><b>Save up to 30%</b><br/>when you book flight and hotel together.</div>
+    <div class="w"><b>Fly Malaysia Airlines</b><br/>or oneworld Alliance members.</div>
+    <div class="w"><b>150,000+ hotels</b><br/>across 100 destinations.</div>
+    <div class="w"><b>One booking</b><br/>for your entire holiday.</div>
+  </div>
+</main>
+
+<footer class="ftr">
+  <div class="ftr-in">
+    <div><h4>MHholidays</h4><ul><li><a href="#">About us</a></li><li><a href="#">Promotions &amp; deals</a></li><li><a href="#">Terms &amp; Conditions</a></li><li><a href="#">Privacy policy</a></li></ul></div>
+    <div><h4>Help</h4><ul><li><a href="#">FAQs</a></li><li><a href="#">Feedback</a></li></ul></div>
+    <div><h4>Malaysia Airlines</h4><ul><li><a href="#">Book a flight</a></li><li><a href="#">Enrich</a></li></ul></div>
+  </div>
+  <div class="copy">&copy; 2026 MHholidays. Unofficial mockup for an Ada multi-brand demo. Photos: Wikimedia Commons.</div>
+</footer>
+
+<script>
+  window.BRAND = {
+    id: "mh_holidays",
+    branding: {
+      aiAgentName: { en: "MHholidays Assistant" },
+      aiAgentDescription: { en: "Help with Flight + Hotel packages and hotel bookings" },
+      avatarUrl: "https://jiapengchua.github.io/brand-mockups/assets/mhh-avatar.png",
+      headerColor: "#007E78",
+      headerTextColor: "#ffffff",
+      tintColor: "#007E78",
+      cornerStyle: "rectangular",
+      launcher: { backgroundColor: "#DB0F66", size: 60 }
+    }
+  };
+</script>
+<script src="../assets/ada-brand.js"></script>
+</body>
+</html>
