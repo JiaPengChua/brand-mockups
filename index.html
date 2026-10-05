@@ -26,7 +26,7 @@
  pre{margin:0;background:var(--code-bg);color:var(--code-ink);font:12.5px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;padding:14px 0;overflow-x:auto;flex:1}
  pre span.l{display:block;padding:0 16px 0 14px;border-left:3px solid transparent;white-space:pre}
  pre span.l.d{background:var(--add);border-left-color:var(--add-bar)}
- .k{color:var(--key)} .s{color:var(--str)} .n{color:var(--num)} .c{color:var(--cmt);font-style:italic}
+ .k{color:var(--key)} .s{color:var(--str)} .n{color:var(--num)} .cm{color:var(--cmt);font-style:italic}
 
  .legend{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);margin:-8px 0 16px}
  .legend b{display:inline-block;width:16px;height:12px;background:var(--add);border-left:3px solid var(--add-bar)}
@@ -74,7 +74,7 @@
   <tr><td><code>tintColor</code></td><td class="dim">Dashboard</td><td><span class="sw" style="background:#007E78"></span><code>#007E78</code></td></tr>
   <tr><td><code>cornerStyle</code></td><td class="dim">Dashboard</td><td><code>"round"</code></td></tr>
   <tr><td><code>launcher.backgroundColor</code></td><td class="dim">Dashboard</td><td><span class="sw" style="background:#007E78"></span><code>#007E78</code></td></tr>
-  <tr><td><code>launcher.iconUrl</code></td><td class="dim">Dashboard (J logo)</td><td>Crew portrait</td></tr>
+  <tr><td><code>launcher.iconUrl</code></td><td class="dim">Dashboard (J logo)</td><td>Circular crop of the crew portrait (<code>assets/mhh-launcher.png</code>)</td></tr>
   <tr><td><code>launcher.size</code></td><td class="dim">Dashboard</td><td><code>60</code></td></tr>
  </tbody>
 </table></div>
@@ -82,7 +82,7 @@
 <h2>Notes</h2>
 <ul class="notes">
  <li><code>branding</code> only changes how the chat looks. The agent never sees it. Greetings, answers and handoffs branch on the <code>brand</code> meta field.</li>
- <li>If you set <code>launcher.backgroundColor</code> without <code>launcher.iconUrl</code>, the launcher keeps the dashboard icon on the new colour.</li>
+ <li>If you set <code>launcher.backgroundColor</code> without <code>launcher.iconUrl</code>, the launcher keeps the dashboard icon on the new colour. Use a square, circle-cropped PNG with a transparent background: a tall photo shows up as a small rectangle inside the button.</li>
  <li>Both pages share one origin, so they share Ada's stored session. When the brand changes, the page calls <code>reset({ metaFields: { brand }, resetChatHistory: true })</code>. Branding stays in place after a reset.</li>
 </ul>
 </div>
@@ -112,7 +112,7 @@
       ['    cornerStyle: "round",', 1],
       ["    launcher: {", 1],
       ['      backgroundColor: "#007E78",', 1],
-      ['      iconUrl: "' + AVATAR + '",', 1],
+      ['      iconUrl: "https://jiapengchua.github.io/brand-mockups/assets/mhh-launcher.png",', 1],
       ["      size: 60", 1],
       ["    }", 1],
       ["  }", 1],
@@ -122,7 +122,7 @@
 
   function esc(t) { return t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
   function hl(t) {
-    if (/^\s*\/\//.test(t)) return '<span class="c">' + esc(t) + "</span>";
+    if (/^\s*\/\//.test(t)) return '<span class="cm">' + esc(t) + "</span>";
     return esc(t)
       .replace(/("[^"]*")/g, '<span class="s">$1</span>')
       .replace(/^(\s*)([A-Za-z]+)(:)/, '$1<span class="k">$2</span>$3')
