@@ -2,7 +2,8 @@
  * One Ada agent, two brands.
  *
  * Each page sets window.BRAND before loading this file. The same handle is
- * started with that brand's `branding` (what the chat looks like) and a
+ * started with that brand's `branding` (what the chat looks like; omitted
+ * for a brand that keeps the dashboard defaults) and a
  * `brand` meta field (what the agent can branch on — branding alone is
  * client-side only and never reaches the agent).
  *
@@ -35,9 +36,8 @@
 
   function start() {
     log("start", brand.id, switched ? "(switched from " + last + ")" : "");
-    window.adaEmbed.start({
+    var settings = {
       handle: HANDLE,
-      branding: brand.branding,
       metaFields: meta,
       adaReadyCallback: function () {
         log("ready");
@@ -48,7 +48,10 @@
           .then(function () { log("reset for new brand"); })
           .catch(function (err) { console.warn("[brand-mockup] reset failed:", err); });
       }
-    }).catch(function (err) {
+    };
+    // A brand without its own branding gets the dashboard appearance.
+    if (brand.branding) settings.branding = brand.branding;
+    window.adaEmbed.start(settings).catch(function (err) {
       console.warn("[brand-mockup] start failed:", err);
     });
   }

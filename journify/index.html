@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Journify | Holidays, attractions &amp; MHflypass</title>
-<link rel="icon" href="../assets/journify-avatar.png" />
+<link rel="icon" href="../assets/journify-logo.png" />
 <style>
   :root{
     --orange:#ff9027; --orange-600:#f57c00; --orange-100:#fff3e3;
@@ -123,19 +123,8 @@
 </footer>
 
 <script>
-  window.BRAND = {
-    id: "journify",
-    branding: {
-      aiAgentName: { en: "Journify Assistant" },
-      aiAgentDescription: { en: "Help with attractions, MHflypass, e-vouchers and holidays" },
-      avatarUrl: "https://jiapengchua.github.io/brand-mockups/assets/journify-avatar.png",
-      headerColor: "#ff9027",
-      headerTextColor: "#ffffff",
-      tintColor: "#ff9027",
-      cornerStyle: "round",
-      launcher: { backgroundColor: "#ff9027", size: 60 }
-    }
-  };
+  // No branding override: the chat uses the agent's dashboard appearance.
+  window.BRAND = { id: "journify" };
 </script>
 <script src="../assets/ada-brand.js"></script>
 </body>

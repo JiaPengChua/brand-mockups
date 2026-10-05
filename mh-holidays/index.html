@@ -4,16 +4,20 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Exclusive Flight and Hotel Packages | MHholidays</title>
-<link rel="icon" href="../assets/mhh-avatar.png" />
+<link rel="icon" href="../assets/mhh-logo.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Allura&display=swap" rel="stylesheet" />
 <style>
+  /* Palette and shapes taken from holidays.malaysiaairlines.com */
   :root{
-    --teal:#007E78; --teal-700:#00625d; --teal-50:#e6f4f3;
+    --teal:#007E78; --teal-700:#00625d; --teal-50:#e6f4f3; --sky:#c7eafb;
     --pink:#DB0F66; --navy:#041049; --blue:#1F4074;
-    --ink:#333333; --muted:#7c8d97; --line:#ced8dd; --bg:#f8f8f8;
+    --ink:#333333; --muted:#6b7a83; --line:#e3e8eb; --bg:#f0f3f5;
+    --cream:#fdf6e9; --amber:#f0a92e;
   }
   *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--ink);
-    font-family:"Gotham",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  body{margin:0;background:#fff;color:var(--ink);font-family:"Figtree",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
   a{color:inherit;text-decoration:none}
   img{max-width:100%;display:block}
 
@@ -21,60 +25,85 @@
   .demo code{background:rgba(255,255,255,.14);padding:1px 6px;border-radius:4px}
   .demo a{color:#7fe0d8;text-decoration:underline;margin-left:6px}
 
-  .deals{background:var(--teal);color:#fff;font-size:13px;text-align:center;padding:8px 16px}
-  .deals b{font-weight:700}
+  .deals{background:var(--cream);border-top:4px solid var(--amber);font-size:13px;padding:12px 20px;display:flex;align-items:center;gap:14px}
+  .deals .bell{position:relative;width:20px;height:20px}
+  .deals .bell svg{width:20px;height:20px;stroke:var(--ink);fill:none;stroke-width:1.8}
+  .deals .bell i{position:absolute;top:-7px;right:-7px;background:#e03131;color:#fff;font-style:normal;font-size:10px;font-weight:700;width:16px;height:16px;border-radius:50%;display:grid;place-items:center}
+  .deals .all{margin-left:auto;color:var(--teal);font-weight:600}
 
-  .hdr{position:sticky;top:0;z-index:40;background:#fff;border-bottom:1px solid var(--line)}
-  .hdr-in{max-width:1200px;margin:0 auto;padding:16px 20px;display:flex;align-items:center;gap:24px}
-  .logo{height:30px;width:auto}
-  .nav{display:flex;align-items:center;gap:26px;margin-left:auto;font-size:14px;font-weight:600;color:var(--blue)}
-  .nav a:hover{color:var(--teal)}
+  /* header sits on the hero, white logo, like the real site */
+  .hero{position:relative;min-height:480px;background:#0b3a4a url("../assets/hero-mhh.jpg") center 60%/cover}
+  .hero::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,0) 35%,rgba(0,0,0,.1) 70%,rgba(0,0,0,.35))}
+  .hdr{position:relative;z-index:2;max-width:1280px;margin:0 auto;padding:22px 20px;display:flex;align-items:center;gap:28px}
+  .hdr .logo{height:32px;width:auto}
+  .nav{display:flex;gap:26px;margin-left:auto;color:#fff;font-weight:700;font-size:14.5px}
+  .nav .lang{display:flex;align-items:center;gap:8px;margin-left:30px}
+  .nav .lang b{width:22px;height:22px;border-radius:50%;background:linear-gradient(180deg,#cc0001 0 50%,#fff 50%);border:2px solid #fff;display:inline-block}
   @media(max-width:700px){.nav .hide-sm{display:none}}
+  .hero-copy{position:relative;z-index:2;max-width:1280px;margin:0 auto;padding:46px 20px 0;color:#fff}
+  .hero-copy .kicker{font-weight:700;letter-spacing:.18em;font-size:14px;text-transform:uppercase}
+  .hero-copy h1{font-family:"Allura",cursive;font-weight:400;font-size:84px;line-height:1;margin:4px 0 6px;text-shadow:0 2px 18px rgba(0,0,0,.25)}
+  .hero-copy p{font-size:17px;margin:0;max-width:44ch;font-weight:500;text-shadow:0 1px 8px rgba(0,0,0,.35)}
+  @media(max-width:700px){.hero-copy h1{font-size:60px}}
 
-  .hero{position:relative;min-height:420px;background:#0b3a4a url("../assets/hero-mhh.jpg") center/cover;display:flex;align-items:flex-end}
-  .hero::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,16,73,.05) 30%,rgba(4,16,73,.65))}
-  .hero-in{position:relative;max-width:1200px;width:100%;margin:0 auto;padding:40px 20px}
-  .hero h1{font-family:"IvyMode",Georgia,serif;font-weight:500;color:#fff;font-size:40px;line-height:1.15;margin:0 0 6px;max-width:20ch}
-  .hero p{color:#fff;margin:0 0 22px;font-size:16px;opacity:.95}
+  /* booking widget overlapping the hero */
+  .booker{position:relative;z-index:3;max-width:1248px;margin:-90px auto 0;background:#fff;border-radius:40px;box-shadow:0 10px 30px rgba(4,16,73,.12);padding:28px 32px 30px}
+  @media(max-width:700px){.booker{margin:-60px 12px 0;border-radius:24px;padding:20px}}
+  .seg{display:grid;grid-template-columns:1fr 1fr;background:var(--bg);border-radius:999px;padding:4px;max-width:830px;margin:0 auto 22px}
+  .seg span{text-align:center;padding:12px;border-radius:999px;color:var(--muted);font-weight:600;cursor:pointer}
+  .seg span.on{background:var(--teal);color:#fff}
+  .chip{display:inline-block;background:var(--sky);color:var(--blue);font-weight:700;padding:10px 20px;border-radius:8px;margin-bottom:14px}
+  .booker p{margin:0 0 18px;color:var(--ink)}
+  .fields{display:grid;grid-template-columns:1.2fr 1.2fr 1fr 1fr auto;gap:12px}
+  @media(max-width:900px){.fields{grid-template-columns:1fr 1fr}}
+  .f{border:1px solid var(--line);border-radius:12px;padding:10px 14px}
+  .f small{display:block;font-size:11.5px;color:var(--muted)}
+  .f span{font-size:15px;font-weight:600;color:var(--navy)}
+  .go{background:var(--teal);color:#fff;border:0;border-radius:999px;padding:0 34px;font-weight:700;font-size:15px;cursor:pointer;min-height:50px;font-family:inherit}
+  .go:hover{background:var(--teal-700)}
 
-  .booker{background:#fff;border-radius:12px;box-shadow:0 14px 40px rgba(4,16,73,.25);padding:16px;max-width:860px}
-  .tabs{display:flex;gap:6px;margin-bottom:14px}
-  .tab{padding:8px 16px;border-radius:999px;font-size:14px;font-weight:700;color:var(--blue);background:var(--teal-50);cursor:pointer}
-  .tab.on{background:var(--teal);color:#fff}
-  .fields{display:grid;grid-template-columns:1.3fr 1.3fr 1fr 1fr auto;gap:10px}
-  @media(max-width:860px){.fields{grid-template-columns:1fr 1fr}}
-  .f{border:1px solid var(--line);border-radius:8px;padding:8px 12px}
-  .f small{display:block;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
-  .f span{font-size:14.5px;font-weight:600;color:var(--navy)}
-  .go{background:var(--pink);color:#fff;border:0;border-radius:8px;padding:0 26px;font-weight:700;font-size:15px;cursor:pointer;min-height:48px}
-  .go:hover{filter:brightness(.92)}
-  .usp{font-size:13px;color:var(--muted);margin:12px 2px 0}
+  .sec{max-width:1280px;margin:0 auto;padding:64px 20px 0}
+  h2{font-size:38px;font-weight:800;color:var(--ink);text-align:center;margin:0 0 30px;letter-spacing:-.01em}
+  h2 em{font-style:normal;color:var(--pink);position:relative;white-space:nowrap}
+  h2 em::after{content:"";position:absolute;left:-4%;right:-8%;bottom:-8px;height:6px;border-radius:50%;border-bottom:2px solid var(--pink);transform:rotate(-1.5deg)}
+  @media(max-width:700px){h2{font-size:28px}}
 
-  .wrap{max-width:1200px;margin:0 auto;padding:48px 20px 70px}
-  h2{font-family:"IvyMode",Georgia,serif;font-weight:500;color:var(--navy);font-size:30px;margin:0 0 22px}
-  .dest{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-  @media(max-width:900px){.dest{grid-template-columns:repeat(2,1fr)}}
+  /* destination cards: photo with text over it */
+  .dest-wrap{background:var(--bg);border-radius:60px;padding:56px 24px 64px;margin-top:64px}
+  .dest{max-width:1232px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+  @media(max-width:1000px){.dest{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:560px){.dest{grid-template-columns:1fr}}
-  .d{background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 2px 10px rgba(4,16,73,.08)}
-  .d img{width:100%;height:190px;object-fit:cover}
-  .d .b{padding:16px 18px 18px}
-  .d h3{margin:0 0 4px;font-size:18px;color:var(--navy)}
-  .d .s{font-size:13px;color:var(--muted)}
-  .d .p{margin:10px 0 0;font-size:13px;color:var(--ink)}
-  .d .p b{font-size:20px;color:var(--teal)}
-  .d .cta{display:inline-block;margin-top:12px;color:var(--pink);font-weight:700;font-size:14px}
+  .d{position:relative;height:420px;border-radius:24px;overflow:hidden;color:#fff;text-align:center}
+  .d img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .d::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 30%,rgba(0,0,0,.55) 60%,rgba(0,0,0,.85))}
+  .d .b{position:absolute;left:0;right:0;bottom:30px;z-index:1;padding:0 16px}
+  .d h3{font-family:"Allura",cursive;font-weight:400;font-size:52px;margin:0 0 8px;line-height:1}
+  .d .s{font-size:14px}
+  .d .p{font-weight:800;font-size:17px;margin:4px 0}
+  .d .pp{font-size:14px}
+  .d .cta{display:inline-block;margin-top:22px;color:#2bb3a9;font-size:16px}
 
-  .why{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:52px}
-  @media(max-width:860px){.why{grid-template-columns:1fr 1fr}}
-  .w{background:#fff;border-left:4px solid var(--teal);border-radius:8px;padding:18px;font-size:14px;line-height:1.55}
+  .deal-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  @media(max-width:900px){.deal-cards{grid-template-columns:1fr}}
+  .dc{border:1px solid var(--line);border-radius:24px;padding:26px;background:#fff}
+  .dc h3{margin:0 0 12px;font-size:20px;line-height:1.35}
+  .dc .ends{font-size:14px;color:var(--muted);margin-bottom:12px}
+  .dc p{margin:0;font-size:14.5px;line-height:1.6}
+  .dc .cta{display:inline-block;margin-top:18px;color:var(--teal);font-weight:700}
+  .more{display:block;width:fit-content;margin:30px auto 0;background:var(--teal);color:#fff;border-radius:999px;padding:14px 40px;font-weight:700}
 
-  .ftr{background:var(--navy);color:#fff;padding:40px 20px 26px}
-  .ftr-in{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:34px}
+  .why{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+  @media(max-width:900px){.why{grid-template-columns:1fr 1fr}}
+  .w{background:var(--bg);border-radius:24px;padding:24px;font-size:15px;line-height:1.55;text-align:center}
+  .w b{display:block;color:var(--teal);font-size:17px;margin-bottom:6px}
+
+  .ftr{background:var(--navy);color:#fff;padding:44px 20px 28px;margin-top:72px}
+  .ftr-in{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:34px}
   @media(max-width:700px){.ftr-in{grid-template-columns:1fr}}
   .ftr h4{margin:0 0 14px;font-size:14px;letter-spacing:.04em;text-transform:uppercase}
   .ftr ul{list-style:none;margin:0;padding:0;display:grid;gap:9px}
   .ftr li a{font-size:13.5px;color:rgba(255,255,255,.78)}
-  .copy{max-width:1200px;margin:30px auto 0;padding-top:18px;border-top:1px solid rgba(255,255,255,.16);font-size:12.5px;color:rgba(255,255,255,.6)}
+  .copy{max-width:1280px;margin:30px auto 0;padding-top:18px;border-top:1px solid rgba(255,255,255,.16);font-size:12.5px;color:rgba(255,255,255,.6)}
 </style>
 </head>
 <body>
@@ -84,55 +113,71 @@
   <a href="../journify/">&larr; Switch to Journify</a>
 </div>
 
-<div class="deals"><b>Deals:</b> Kids Fly &amp; Stay Free &middot; Discover the best of Thailand and Indonesia</div>
+<div class="deals">
+  <span class="bell"><svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><i>3</i></span>
+  Deals info: MHholidays | Kids Fly &amp; Stay Free
+  <a class="all" href="#">View all</a>
+</div>
 
-<header class="hdr">
-  <div class="hdr-in">
-    <a href="#"><img class="logo" src="../assets/mhh-logo.png" alt="MHholidays" /></a>
+<section class="hero">
+  <header class="hdr">
+    <a href="#"><img class="logo" src="../assets/mhh-logo-white.png" alt="MHholidays" /></a>
     <nav class="nav">
       <a href="#">Promotions</a>
       <a class="hide-sm" href="#">About us</a>
       <a class="hide-sm" href="#">Feedback</a>
+      <span class="lang hide-sm"><b></b>EN</span>
     </nav>
-  </div>
-</header>
-
-<section class="hero">
-  <div class="hero-in">
-    <h1>Save up to 30% on Flight + Hotel packages</h1>
-    <p>Fly with Malaysia Airlines or oneworld members and choose from over 150,000 hotels.</p>
-    <div class="booker">
-      <div class="tabs"><span class="tab on">Flight + Hotel</span><span class="tab">Hotel</span></div>
-      <div class="fields">
-        <div class="f"><small>From</small><span>Kuala Lumpur (KUL)</span></div>
-        <div class="f"><small>To</small><span>Langkawi (LGK)</span></div>
-        <div class="f"><small>Dates</small><span>Select dates</span></div>
-        <div class="f"><small>Guests</small><span>2 adults, 1 room</span></div>
-        <button class="go">Search</button>
-      </div>
-      <p class="usp">Up to 40kg baggage allowance and a one-time free date change.</p>
-    </div>
+  </header>
+  <div class="hero-copy">
+    <div class="kicker">Think holidays, think MHholidays</div>
+    <h1>Island Escapes</h1>
+    <p>Save up to 30% when you book your Flight + Hotel together.</p>
   </div>
 </section>
 
-<main class="wrap">
-  <h2>Explore our top destinations</h2>
-  <div class="dest">
-    <div class="d"><img src="../assets/dest-langkawi.jpg" alt="Langkawi" /><div class="b"><h3>Langkawi</h3><div class="s">3D2N Flight + Hotel</div><p class="p">from <b>MYR439</b> all-in per person</p><a class="cta" href="#">Book now &rarr;</a></div></div>
-    <div class="d"><img src="../assets/dest-bangkok.jpg" alt="Bangkok" /><div class="b"><h3>Bangkok</h3><div class="s">4D3N Flights + Hotel stay</div><p class="p">from <b>MYR759</b> all-in per person</p><a class="cta" href="#">Book now &rarr;</a></div></div>
-    <div class="d"><img src="../assets/dest-bali.jpg" alt="Bali" /><div class="b"><h3>Bali</h3><div class="s">Flight + Hotel</div><p class="p">Ask the assistant for current fares</p><a class="cta" href="#">View deals &rarr;</a></div></div>
-    <div class="d"><img src="../assets/dest-penang.jpg" alt="Penang" /><div class="b"><h3>Penang</h3><div class="s">Flight + Hotel</div><p class="p">Kids Fly &amp; Stay Free</p><a class="cta" href="#">View deals &rarr;</a></div></div>
-    <div class="d"><img src="../assets/dest-kk.jpg" alt="Kota Kinabalu" /><div class="b"><h3>Kota Kinabalu</h3><div class="s">Flight + Hotel</div><p class="p">Ask the assistant for current fares</p><a class="cta" href="#">View deals &rarr;</a></div></div>
-    <div class="d"><img src="../assets/dest-tokyo.jpg" alt="Tokyo" /><div class="b"><h3>Tokyo</h3><div class="s">Flight + Hotel</div><p class="p">Ask the assistant for current fares</p><a class="cta" href="#">View deals &rarr;</a></div></div>
+<div class="booker">
+  <div class="seg"><span class="on">Flight + Hotel</span><span>Hotel</span></div>
+  <span class="chip">Flight + Hotel</span>
+  <p>Book your flight and hotel together and save up to 30%. Plus, enjoy up to 40kg baggage allowance and a one-time free date change.</p>
+  <div class="fields">
+    <div class="f"><small>From</small><span>Kuala Lumpur (KUL)</span></div>
+    <div class="f"><small>To</small><span>Langkawi (LGK)</span></div>
+    <div class="f"><small>Dates</small><span>Select dates</span></div>
+    <div class="f"><small>Travellers</small><span>2 adults, 1 room</span></div>
+    <button class="go">Search</button>
   </div>
+</div>
 
-  <div class="why">
-    <div class="w"><b>Save up to 30%</b><br/>when you book flight and hotel together.</div>
-    <div class="w"><b>Fly Malaysia Airlines</b><br/>or oneworld Alliance members.</div>
-    <div class="w"><b>150,000+ hotels</b><br/>across 100 destinations.</div>
-    <div class="w"><b>One booking</b><br/>for your entire holiday.</div>
+<section class="sec">
+  <h2>Deals to inspire your <em>next trip</em></h2>
+  <div class="deal-cards">
+    <div class="dc"><h3>A rewarding getaway awaits this payday</h3><div class="ends">Offer ends 3 Oct 2026</div><p>Enjoy up to <b>MYR 200</b> in savings on your Flight + Hotel package to Jakarta, Da Nang, or Kota Kinabalu. Use code <b>HOLIDAY200</b>.</p><a class="cta" href="#">Book Now &rarr;</a></div>
+    <div class="dc"><h3>City breaks, shoreline escapes, and more</h3><div class="ends">Offer ends 30 Sep 2026</div><p>Book a Flight + Hotel package to Bangkok, Bali, Chiang Mai, or Jakarta and save MYR 150 with code <b>WOW150</b>.</p><a class="cta" href="#">Book Now &rarr;</a></div>
+    <div class="dc"><h3>MYR 50 off your next stay!</h3><div class="ends">Offer ends 31 December 2026</div><p>Save big on nature retreats and city staycations. Use code <b>SQUAD50</b> at checkout.</p><a class="cta" href="#">Book Now &rarr;</a></div>
   </div>
-</main>
+  <a class="more" href="#">Show more</a>
+</section>
+
+<div class="dest-wrap">
+  <h2>Explore our top <em>destinations</em></h2>
+  <div class="dest">
+    <div class="d"><img src="../assets/dest-langkawi.jpg" alt="" /><div class="b"><h3>Langkawi</h3><div class="s">3D2N Flight + Hotel from</div><div class="p">MYR439</div><div class="pp">All-in per person</div><a class="cta" href="#">Book Now</a></div></div>
+    <div class="d"><img src="../assets/dest-bangkok.jpg" alt="" /><div class="b"><h3>Bangkok</h3><div class="s">4D3N Flights + Hotel stay from</div><div class="p">MYR759</div><div class="pp">All-in per person</div><a class="cta" href="#">Book now</a></div></div>
+    <div class="d"><img src="../assets/dest-incheon.jpg" alt="" /><div class="b"><h3>Incheon</h3><div class="s">4D3N Flight + Hotel from</div><div class="p">MYR2769</div><div class="pp">All-in per person</div><a class="cta" href="#">Book now</a></div></div>
+    <div class="d"><img src="../assets/dest-kuching.jpg" alt="" /><div class="b"><h3>Kuching</h3><div class="s">3D2N Flight + Hotel from</div><div class="p">MYR419</div><div class="pp">All-in per person</div><a class="cta" href="#">Book now</a></div></div>
+  </div>
+</div>
+
+<section class="sec">
+  <h2>Why book with <em>MHholidays?</em></h2>
+  <div class="why">
+    <div class="w"><b>Save up to 30%</b>on Flight + Hotel packages.</div>
+    <div class="w"><b>Fly with us</b>on Malaysia Airlines or oneworld Alliance members.</div>
+    <div class="w"><b>150,000+ hotels</b>across 100 destinations.</div>
+    <div class="w"><b>One booking</b>for your entire holiday, at one go.</div>
+  </div>
+</section>
 
 <footer class="ftr">
   <div class="ftr-in">
@@ -149,12 +194,12 @@
     branding: {
       aiAgentName: { en: "MHholidays Assistant" },
       aiAgentDescription: { en: "Help with Flight + Hotel packages and hotel bookings" },
-      avatarUrl: "https://jiapengchua.github.io/brand-mockups/assets/mhh-avatar.png",
+      avatarUrl: "https://static.ada.support/images/b142d338-4134-4115-9f05-6e38c5036b4b.png",
       headerColor: "#007E78",
       headerTextColor: "#ffffff",
       tintColor: "#007E78",
-      cornerStyle: "rectangular",
-      launcher: { backgroundColor: "#DB0F66", size: 60 }
+      cornerStyle: "round",
+      launcher: { backgroundColor: "#007E78", size: 60 }
     }
   };
 </script>

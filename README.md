@@ -2,8 +2,9 @@
 
 Two mock storefronts on one Ada agent (`journify-sandbox`, Messaging SDK):
 
-- `journify/`: Journify. `brand=journify`.
-- `mh-holidays/`: MHholidays. `brand=mh_holidays`.
+- `journify/`: Journify. `brand=journify`. No branding override, so it uses the dashboard's default appearance.
+- `mh-holidays/`: MHholidays. `brand=mh_holidays`. Teal `#007E78` header, tint and launcher, round corners,
+  and the crew avatar from `static.ada.support`. Styled after holidays.malaysiaairlines.com.
 
 Live: https://jiapengchua.github.io/brand-mockups/
 
@@ -24,11 +25,11 @@ which usually means the iframe allow list is wrong.
 
 ## Swapping the branding
 
-Edit the `window.BRAND.branding` block at the bottom of each page. Supported keys are `aiAgentName`,
+Edit the `window.BRAND.branding` block at the bottom of a page. Leave it out to keep the dashboard defaults. Supported keys are `aiAgentName`,
 `aiAgentDescription` (localized maps), `avatarUrl` (absolute HTTPS), `headerColor`,
 `headerTextColor`, `tintColor`, `cornerStyle` (`round` / `rectangular`), `textSize` and `launcher`.
 
-The avatars are placeholders. Logos and destination photos come from the brands' public sites and
+Logos and destination photos come from the brands' public sites and
 Wikimedia Commons. These are unofficial demo pages.
 
 ## Prerequisite
