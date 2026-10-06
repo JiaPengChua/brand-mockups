@@ -48,7 +48,7 @@
 </div>
 
 <h2>The embed code for each brand</h2>
-<p>This is the <code>start()</code> call each page makes. The loader script and the reset on brand switch work the same on both. Journify also hides Ada's launcher, draws its own, and only calls <code>start()</code> when the visitor opens the chat.</p>
+<p>This is the <code>start()</code> call each page makes. The loader script and the reset on brand switch work the same on both. Journify also hides Ada's launcher and draws its own.</p>
 <div class="legend"><b></b> differs between brands</div>
 <div class="g">
  <div class="snip" style="--a:var(--jf)">
@@ -67,7 +67,7 @@
  <tbody>
   <tr><td><code>metaFields.brand</code></td><td><code>"journify"</code></td><td><code>"mh_holidays"</code></td></tr>
   <tr><td><code>metaFields.triggerNudge</code></td><td><code>true</code> once the idle bubble has shown</td><td class="dim">Not set</td></tr>
-  <tr><td>Start</td><td>Lazy: on first open</td><td>On page load</td></tr>
+  <tr><td>Start</td><td>SDK boots on page load; conversation starts on first open</td><td>Same</td></tr>
   <tr><td><code>aiAgentName</code></td><td class="dim">Dashboard ("Hey Journify!")</td><td>MHholidays Assistant</td></tr>
   <tr><td><code>aiAgentDescription</code></td><td class="dim">Dashboard (none)</td><td>Help with Flight + Hotel packages and hotel bookings</td></tr>
   <tr><td><code>avatarUrl</code></td><td class="dim">Dashboard (J logo)</td><td>Crew portrait (static.ada.support)</td></tr>
@@ -98,11 +98,13 @@
     jf: [
       ["window.adaEmbed.start({"],
       ['  handle: "journify-sandbox",'],
-      ['  metaFields: { brand: "journify", triggerNudge: viaNudge },', 1],
+      ['  metaFields: { brand: "journify", triggerNudge: false },', 1],
       ["  // no branding: dashboard appearance", 1],
-      ["  adaReadyCallback: function () { window.adaEmbed.toggle(); },", 1],
       ["  toggleCallback: function (isOpen) { /* sync own launcher */ }", 1],
-      ["});"]
+      ["});"],
+      [""],
+      ["// on nudge click: set the flag, then open (opening starts the conversation)", 1],
+      ["window.adaEmbed.setMetaFields({ triggerNudge: true }).then(() => window.adaEmbed.toggle());", 1]
     ],
     mh: [
       ["window.adaEmbed.start({"],

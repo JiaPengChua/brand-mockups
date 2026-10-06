@@ -185,12 +185,14 @@
 
   var nudge    = document.getElementById("nudge"),
       launcher = document.getElementById("launcher"),
-      started  = false,
+      opened   = false,   // the visitor has asked for the chat
+      ready    = false,   // Ada's SDK has finished booting
+      pending  = null,    // an open requested before the SDK was ready (true = via nudge)
       nudged   = false;   // the bubble has been shown this visit
 
   // Both brand pages share one origin, and so one stored Ada session. If the
-  // visitor was last on the other brand, the conversation is reset on open so
-  // it does not carry over. See ../assets/ada-brand.js for the MHholidays side.
+  // visitor was last on the other brand, the stored session is reset while the
+  // SDK boots, so the conversation does not carry over. See ../assets/ada-brand.js for the MHholidays side.
   var BRAND = "journify", switched = false;
   try {
     var last = localStorage.getItem("ada_mock_last_brand");
@@ -198,8 +200,7 @@
     localStorage.setItem("ada_mock_last_brand", BRAND);
   } catch (e) {}   // blocked storage: treat as same brand
 
-  // Nothing loads until the visitor asks for it: no chatter is created and the
-  // conversation-start playbook does not run until openChat() calls start().
+  // We call start() ourselves, as soon as embed2.js has loaded (see preload()).
   window.adaSettings = { lazy: true };
 
   /* ---------------- idle ---------------- */
@@ -211,7 +212,7 @@
     var timer, fired = false;
 
     function fire() {
-      if (fired || started) return;
+      if (fired || opened) return;
       fired = true;
       showNudge();
     }
@@ -240,32 +241,47 @@
 
   /* ---------------- chat ---------------- */
 
-  // Opened from the bubble, or from the launcher. Either counts as nudge-driven
-  // once the bubble has appeared: the page interrupted them either way.
-  function openChat(viaNudge) {
-    hideNudge();
-    if (started) {
-      if (viaNudge) window.adaEmbed.setMetaFields({ triggerNudge: true });
-      return window.adaEmbed.toggle();
-    }
-    started = true;
-    // start() is what creates the conversation, so meta fields passed here are
-    // on the chatter before the conversation-start playbook runs. Setting them
-    // afterwards would be too late for the playbook to branch on.
-    // No `branding` here: Journify keeps the dashboard appearance.
-    var meta = { brand: BRAND, triggerNudge: !!viaNudge };
+  // Boot the SDK in the background as soon as the page loads. Booting is the
+  // slow part (several seconds), and doing it on click made the visitor stare at
+  // nothing after tapping the nudge. It does NOT start a conversation: Ada only
+  // creates one, and runs the conversation-start playbook, when the drawer is
+  // first opened. So the triggerNudge flag can still be set at click time.
+  // No `branding` here: Journify keeps the dashboard appearance.
+  function preload() {
+    var meta = { brand: BRAND, triggerNudge: false };
     window.adaEmbed.start({
       handle: "journify-sandbox",
       metaFields: meta,
       adaReadyCallback: function () {
-        if (!switched) return window.adaEmbed.toggle();
+        function go() {
+          ready = true;
+          if (pending !== null) { var v = pending; pending = null; reveal(v); }
+        }
+        if (!switched) return go();
         switched = false;
         window.adaEmbed.reset({ metaFields: meta, resetChatHistory: true })
           .catch(function (err) { console.warn("[journify] reset failed:", err); })
-          .then(function () { window.adaEmbed.toggle(); });
+          .then(go);
       },
       toggleCallback: function (isOpen) { launcher.classList.toggle("open", isOpen); }
-    });
+    }).catch(function (err) { console.warn("[journify] start failed:", err); });
+  }
+
+  // Set the flag first, then open: opening is what starts the conversation, so
+  // the conversation-start playbook sees triggerNudge already set.
+  function reveal(viaNudge) {
+    var flag = viaNudge ? window.adaEmbed.setMetaFields({ triggerNudge: true }) : Promise.resolve();
+    flag.catch(function (err) { console.warn("[journify] setMetaFields failed:", err); })
+        .then(function () { return window.adaEmbed.toggle(); });
+  }
+
+  // Opened from the bubble, or from the launcher. Either counts as nudge-driven
+  // once the bubble has appeared: the page interrupted them either way.
+  function openChat(viaNudge) {
+    hideNudge();
+    opened = true;
+    if (!ready) { pending = !!viaNudge; return; }   // opens as soon as the SDK is up
+    reveal(!!viaNudge);
   }
 
   /* ---------------- wiring ---------------- */
@@ -279,10 +295,11 @@
     hideNudge();
   };
   launcher.onclick = function () {
-    started ? window.adaEmbed.toggle() : openChat(nudged);
+    if (opened && ready) return window.adaEmbed.toggle();
+    if (!opened) openChat(nudged);
   };
 </script>
-<script async src="https://static.ada.support/embed2.js"></script>
+<script async src="https://static.ada.support/embed2.js" onload="preload()"></script>
 
 </body>
 </html>

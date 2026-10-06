@@ -42,8 +42,12 @@ Settings → Security → Chat iframe allow list.
 
 Journify inlines its own embed code instead of using `ada-brand.js`:
 
-- **Lazy start.** `adaSettings = { lazy: true }`, and `start()` runs only when the visitor opens the
-  chat. Until then there's no chatter and the conversation-start playbook doesn't run.
+- **Background boot, conversation on open.** `start()` runs as soon as `embed2.js` loads, so the SDK
+  boots while the visitor reads the page. Ada creates the conversation, and runs the conversation-start
+  playbook, only when the drawer first opens. The click then sets `triggerNudge` with `setMetaFields()`
+  and calls `toggle()`. Booting on click instead kept the drawer hidden for about 13 s after a nudge
+  click in headless Chrome. Now the drawer opens immediately, and the greeting arrives once Ada's chat
+  app has loaded (about 6–8 s on first open).
 - **Idle nudge.** After 10s with no mouse, key, scroll or touch activity (a hidden tab doesn't count),
   the page shows its own "Choose flypass?" bubble. Once the bubble has shown, opening the chat by the
   bubble *or* the launcher sets `triggerNudge: true`. It fires once per page load and never sends a
@@ -54,6 +58,6 @@ Journify inlines its own embed code instead of using `ada-brand.js`:
 - **Why not `parentElement`?** It starts the conversation on page load, can't be combined with
   `lazy`, and disables `toggle()` and proactives.
 - **Brand switch.** It uses the same `ada_mock_last_brand` key as `ada-brand.js`. If the visitor was
-  last on MHholidays, `reset()` runs before the drawer opens.
+  last on MHholidays, `reset()` runs during the background boot.
 
 On the agent side, create a variable named exactly `triggerNudge` on journify-sandbox and branch on it.
