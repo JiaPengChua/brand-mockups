@@ -2,7 +2,8 @@
 
 Two mock storefronts on one Ada agent (`journify-sandbox`, Messaging SDK):
 
-- `journify/`: Journify. `brand=journify`. No branding override, so it uses the dashboard's default appearance.
+- `journify/`: Journify contact-us page. `brand=journify`. No branding override, so it uses the dashboard's
+  default appearance. Carries the idle-nudge demo (formerly `journify-nudge-mockup`): see below.
 - `mh-holidays/`: MHholidays. `brand=mh_holidays`. Teal `#007E78` header, tint and launcher, round corners,
   and the crew avatar from `static.ada.support`. Styled after holidays.malaysiaairlines.com.
 
@@ -10,7 +11,7 @@ Live: https://jiapengchua.github.io/brand-mockups/
 
 ## How it works
 
-Each page sets `window.BRAND = { id, branding }` and loads `assets/ada-brand.js`, which:
+MHholidays sets `window.BRAND = { id, branding }` and loads `assets/ada-brand.js`, which:
 
 1. Loads `embed2.js` lazily and calls `adaEmbed.start({ handle, branding, metaFields: { brand } })`.
    - `branding` controls only how the chat looks. The agent never sees it.
@@ -36,3 +37,23 @@ Wikimedia Commons. These are unofficial demo pages.
 
 `https://jiapengchua.github.io` (no trailing slash) must be on journify-sandbox's
 Settings → Security → Chat iframe allow list.
+
+## Journify: idle nudge and custom launcher
+
+Journify inlines its own embed code instead of using `ada-brand.js`:
+
+- **Lazy start.** `adaSettings = { lazy: true }`, and `start()` runs only when the visitor opens the
+  chat. Until then there's no chatter and the conversation-start playbook doesn't run.
+- **Idle nudge.** After 10s with no mouse, key, scroll or touch activity (a hidden tab doesn't count),
+  the page shows its own "Choose flypass?" bubble. Once the bubble has shown, opening the chat by the
+  bubble *or* the launcher sets `triggerNudge: true`. It fires once per page load and never sends a
+  message for the visitor.
+- **Own launcher, bigger window.** `#ada-button-frame` is hidden, and the page draws its own orange
+  launcher. `#ada-chat-frame` is resized to 400×620 with `!important` CSS. Override `max-width` too,
+  because Embed2 sets `max-width: 375px` inline.
+- **Why not `parentElement`?** It starts the conversation on page load, can't be combined with
+  `lazy`, and disables `toggle()` and proactives.
+- **Brand switch.** It uses the same `ada_mock_last_brand` key as `ada-brand.js`. If the visitor was
+  last on MHholidays, `reset()` runs before the drawer opens.
+
+On the agent side, create a variable named exactly `triggerNudge` on journify-sandbox and branch on it.

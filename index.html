@@ -43,12 +43,12 @@
 <h1>One Ada agent, two brands</h1>
 <p>Both pages run the same agent (<code>journify-sandbox</code>). Each one passes a <code>brand</code> meta field. MHholidays also passes its own <code>branding</code> to <code>adaEmbed.start()</code>. Switching pages resets the conversation.</p>
 <div class="g">
- <a class="c" style="--a:#ff9027" href="journify/"><b>Journify</b><span>brand = journify &middot; dashboard default branding</span></a>
+ <a class="c" style="--a:#ff9027" href="journify/"><b>Journify</b><span>brand = journify &middot; dashboard branding, idle nudge, own launcher</span></a>
  <a class="c" style="--a:#007E78" href="mh-holidays/"><b>MHholidays</b><span>brand = mh_holidays &middot; teal branding, crew avatar</span></a>
 </div>
 
 <h2>The embed code for each brand</h2>
-<p>This is the <code>start()</code> call each page makes. Everything else on the pages, like the loader script and the reset on brand switch, is shared.</p>
+<p>This is the <code>start()</code> call each page makes. The loader script and the reset on brand switch work the same on both. Journify also hides Ada's launcher, draws its own, and only calls <code>start()</code> when the visitor opens the chat.</p>
 <div class="legend"><b></b> differs between brands</div>
 <div class="g">
  <div class="snip" style="--a:var(--jf)">
@@ -66,6 +66,8 @@
  <thead><tr><th>Setting</th><th>Journify</th><th>MHholidays</th></tr></thead>
  <tbody>
   <tr><td><code>metaFields.brand</code></td><td><code>"journify"</code></td><td><code>"mh_holidays"</code></td></tr>
+  <tr><td><code>metaFields.triggerNudge</code></td><td><code>true</code> once the idle bubble has shown</td><td class="dim">Not set</td></tr>
+  <tr><td>Start</td><td>Lazy: on first open</td><td>On page load</td></tr>
   <tr><td><code>aiAgentName</code></td><td class="dim">Dashboard ("Hey Journify!")</td><td>MHholidays Assistant</td></tr>
   <tr><td><code>aiAgentDescription</code></td><td class="dim">Dashboard (none)</td><td>Help with Flight + Hotel packages and hotel bookings</td></tr>
   <tr><td><code>avatarUrl</code></td><td class="dim">Dashboard (J logo)</td><td>Crew portrait (static.ada.support)</td></tr>
@@ -73,15 +75,17 @@
   <tr><td><code>headerTextColor</code></td><td class="dim">Dashboard</td><td><span class="sw" style="background:#ffffff"></span><code>#ffffff</code></td></tr>
   <tr><td><code>tintColor</code></td><td class="dim">Dashboard</td><td><span class="sw" style="background:#007E78"></span><code>#007E78</code></td></tr>
   <tr><td><code>cornerStyle</code></td><td class="dim">Dashboard</td><td><code>"round"</code></td></tr>
-  <tr><td><code>launcher.backgroundColor</code></td><td class="dim">Dashboard</td><td><span class="sw" style="background:#007E78"></span><code>#007E78</code></td></tr>
-  <tr><td><code>launcher.iconUrl</code></td><td class="dim">Dashboard (J logo)</td><td>Circular crop of the crew portrait (<code>assets/mhh-launcher.png</code>)</td></tr>
-  <tr><td><code>launcher.size</code></td><td class="dim">Dashboard</td><td><code>60</code></td></tr>
+  <tr><td><code>launcher.backgroundColor</code></td><td class="dim">Not used: Ada's launcher is hidden; the page draws its own orange one</td><td><span class="sw" style="background:#007E78"></span><code>#007E78</code></td></tr>
+  <tr><td><code>launcher.iconUrl</code></td><td class="dim">Not used</td><td>Circular crop of the crew portrait (<code>assets/mhh-launcher.png</code>)</td></tr>
+  <tr><td><code>launcher.size</code></td><td class="dim">Not used</td><td><code>60</code></td></tr>
+  <tr><td>Chat window size</td><td>400&times;620, set with CSS on <code>#ada-chat-frame</code></td><td class="dim">Ada default</td></tr>
  </tbody>
 </table></div>
 
 <h2>Notes</h2>
 <ul class="notes">
  <li><code>branding</code> only changes how the chat looks. The agent never sees it. Greetings, answers and handoffs branch on the <code>brand</code> meta field.</li>
+ <li>Journify's idle nudge: after 10s with no activity, the page shows its own bubble. Opening the chat after that, by the bubble or the launcher, starts the conversation with <code>triggerNudge: true</code>. It nudges once per page load and never sends a message for the visitor.</li>
  <li>If you set <code>launcher.backgroundColor</code> without <code>launcher.iconUrl</code>, the launcher keeps the dashboard icon on the new colour. Use a square, circle-cropped PNG with a transparent background: a tall photo shows up as a small rectangle inside the button.</li>
  <li>Both pages share one origin, so they share Ada's stored session. When the brand changes, the page calls <code>reset({ metaFields: { brand }, resetChatHistory: true })</code>. Branding stays in place after a reset.</li>
 </ul>
@@ -94,8 +98,10 @@
     jf: [
       ["window.adaEmbed.start({"],
       ['  handle: "journify-sandbox",'],
-      ['  metaFields: { brand: "journify" },', 1],
+      ['  metaFields: { brand: "journify", triggerNudge: viaNudge },', 1],
       ["  // no branding: dashboard appearance", 1],
+      ["  adaReadyCallback: function () { window.adaEmbed.toggle(); },", 1],
+      ["  toggleCallback: function (isOpen) { /* sync own launcher */ }", 1],
       ["});"]
     ],
     mh: [
