@@ -1,4 +1,4 @@
-# Ada multi-brand mockups
+# Journify multi-brand mockups
 
 Two mock storefronts on one Ada agent (`journify-sandbox`, Messaging SDK):
 
@@ -7,7 +7,7 @@ Two mock storefronts on one Ada agent (`journify-sandbox`, Messaging SDK):
 - `mh-holidays/`: MHholidays. `brand=mh_holidays`. Teal `#007E78` header, tint and launcher, round corners,
   and the crew avatar from `static.ada.support`. Styled after holidays.malaysiaairlines.com.
 
-Live: https://jiapengchua.github.io/brand-mockups/
+Live: https://jiapengchua.github.io/journify-brand/
 
 ## How it works
 
